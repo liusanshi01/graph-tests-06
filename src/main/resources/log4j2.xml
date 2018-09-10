@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+  <properties>
+    <property name="LOG_HOME">./logs</property>
+    <property name="FILE_NAME">service</property>
+  </properties>
+
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS Z}\t%level\t%l\t[%thread]\t%msg%n"/>
+    </Console>
+
+    <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${LOG_HOME}/${FILE_NAME}.log"
+      filePattern="${LOG_HOME}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.log">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS Z}\t%level\t%class\t[%thread]\t%msg%n"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy interval="1"/>
+        <SizeBasedTriggeringPolicy size="1 MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="15"/>
+    </RollingRandomAccessFile>
+
+    <RollingRandomAccessFile name="log4data" fileName="${LOG_HOME}/data.log"
+      filePattern="${LOG_HOME}/data-%d{MM-dd-yyyy}-%i.log">
+      <PatternLayout pattern="%msg%n"/>
+      <Policies>
+        <TimeBasedTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="250 MB"/>
+      </Policies>
+    </RollingRandomAccessFile>
+
+    <Async name="AsyncAppender">
+      <AppenderRef ref="RollingRandomAccessFile"/>
+    </Async>
+  </Appenders>
+
+  <Loggers>
+    <Root level="info">
+      <AppenderRef ref="Console"/>
+      <AppenderRef ref="AsyncAppender" />
+    </Root>
+
+    <Logger name="RollingRandomAccessFileLogger" level="info" additivity="false">
+      <AppenderRef ref="AsyncAppender"/>
+    </Logger>
+
+    <Logger name="log4data" level="info" additivity="false">
+      <AppenderRef ref="log4data" />
+    </Logger>
+
+    <!--<AsyncLogger name="asyncLogger" level="INFO" additivity="false">-->
+    <!--<AppenderRef ref="RollingRandomAccessFile" />-->
+    <!--</AsyncLogger>-->
+  </Loggers>
+</Configuration>

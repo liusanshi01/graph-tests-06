@@ -1,0 +1,24 @@
+
+#查看jar中是否有config.properties文件
+jar -tf graph-tests-jar-with-dependencies.jar |grep config.properties
+
+
+
+# 从jar中解压配置文件
+jar -xf graph-tests-jar-with-dependencies.jar config.properties
+
+修改配置文件之后，
+# 将配置文件更新到jar文件中
+jar -uf graph-tests-jar-with-dependencies.jar config.properties
+
+
+gennodedata， loadnodedata , genedgedata, loadedgedata
+
+运行命令：
+  java  -jar graph-tests-jar-with-dependencies.jar gennodedata
+参数说明：
+  gennodedata：产生node数据
+  loadnodedata：将node数据从文件中导入到hbase
+  genedgedata： 生成edge数据
+  loadedgedata：将edge数据倒入到hbase中
+
